@@ -54,7 +54,7 @@ class FriendsForm(forms.Form):
         self.fields['friends'] = forms. MultipleChoiceField
             choices=[(item.user, item.user) for item in friends] ,
             widget=forms.CheckboxSelectMultiple(),
-            initial=vals
+            initial=vals #初期値
         )
         
         
