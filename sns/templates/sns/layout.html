@@ -4,7 +4,7 @@
 <head>
     <meta charset="utf-8">
     <title>{% block title %}{% endblock %}</title>
-    <link rel="stylesheet" type="text/css"
+    <link rel="stylesheet" type="text/css" 
         href="{% static 'sns/style.css' %}" />
 </head>
 <body>
@@ -20,21 +20,15 @@
         </tr>
         </table>
         </td></tr>
-        <tr><th width="150px">login user:</th>
-            <td>"{{login_user}}"</td></tr>
+        <tr><th width="150px">login user:</th><td>"{{login_user}}"</td></tr>
         </table>
-        <div class="header">{% block header %}
-            {% endblock %}</div>
-        <div class="content">{% block content %}
-            {% endblock %}</div>
+        <div class="header">{% block header %}{% endblock %}</div>
+        <div class="content">{% block content %}{% endblock %}</div>
         <div class="footer">
         <hr>
         <div>
-        <span style="float:left;font-weight:bold;">
-            <a href="/admin/logout?next=/sns/">
-                [ logout ]</a></span>
-        <span style="float:right">copyright 2021
-            Iron Works Orio. </span>
+        <span style="float:left;font-weight:bold;"><a href="/admin/logout?next=/sns/">[ logout ]</a></span>
+        <span style="float:right">copyright 2018 SYODA-Tuyano.</span>
         </div>
         </div>
     </div>

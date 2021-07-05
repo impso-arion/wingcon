@@ -11,4 +11,5 @@ urlpatterns = [
     path('good/<int:good_id>', views.good, name='good'),
 ]
 
+
 #全部で7つのwebページを作成していることがわかる
