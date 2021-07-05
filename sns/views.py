@@ -4,8 +4,7 @@ from django.contrib.auth.models import User
 from django.contrib import messages
 
 from .models import Message,Friend,Group,Good
-from .forms import GroupCheckForm, GroupSelectForm, \
-    SearchForm,FriendsForm,CreateGroupForm, PostForm
+from .forms import GroupCheckForm, GroupSelectForm, SearchForm, FriendsForm, CreateGroupForm, PostForm
 from django.db.models import Q
 from django.contrib.auth.decorators import login_required
 
@@ -13,21 +12,21 @@ from django.contrib.auth.decorators import login_required
 @login_required(login_url='/admin/login/')
 def index(request):
     # public Ouser 取得
-    (public_user, public_group) get_public()
+    (public_user, public_group) = get_public()
     
     # POST送信時の処理
     if request.method == 'POST':
         # Groupsのチェックを更新した時の処理
-        if request. POST['mode'] == '__check_form__':
+        if request.POST['mode'] == '__check_form__':
             # フォームの用意
             searchform = SearchForm()
             checkform = GroupCheckForm(request.user,request.POST)
             # チェックされたGroup名をリストにまとめる
-            glist []
+            glist = []
             for item in request.POST.getlist('groups'):
                 glist.append(item)
             # Messageの取得
-            messages get_your_group_message(request.user, \
+            messages = get_your_group_message(request.user, \
                 glist, None)
         
         # Groups メニューを変更した時の処理
@@ -46,7 +45,7 @@ def index(request):
         # GETアクセス時の処理
         else:
             # フォームの用意
-            searchform = SearchForm)
+            searchform = SearchForm()
             checkform = GroupCheckForm(request.user)
             # Groupのリストを取得
             gps = Group.objects.filter (owner=request.user)
@@ -57,7 +56,7 @@ def index(request):
             messages = get_your_group_message (request.user, glist, None)
             
         #共通処理
-        params {
+        params = {
             'login_user':request.user,
             'contents':messages,
             'check_form':checkform,
@@ -76,7 +75,7 @@ def groups (request):
         # Groups メニュー選択肢の処理
         if request. POST['mode'] == '__groups_form__':
             # 選択したGroup名を取得
-            sel_group = request. POST['groups']
+            sel_group = request.POST['groups']
             # Grooup を取得
             gp = Group.objects.filter (owner=request.user)\
                 .filter(title=sel_group).first()
@@ -84,7 +83,7 @@ def groups (request):
             fds = Friend.objects.filter (owner=request.user)\
                 .filter(group=gp)
             # Friendの User をリストにまとめる
-            vlist []
+            vlist = []
             for item in fds:
                 vlist.append(item.user.username)
             # フォームの用意
@@ -93,49 +92,49 @@ def groups (request):
                     friends=friends, vals=vlist)    
         
         # Friendsのチェック更新時の処理
-    	if request. POST['mode'] == __friends_form__':
+        if request.POST['mode'] == '__friends_form__':
     	    # 選択したGroupの取得
-    	        sel_group = request. POST['group']
-    	        group_obj = Group.objects.filter(title=sel_group).first()
-            	#チェックしたFriendsを取得
-            	sel_fds = request. POST.getlist('friends')
-            	# Friendsの User を取得
-            	sel_users = User.objects.filter(username__in=sel_fds)
-            	# Userのリストに含まれるユーザーが登録したFriendを取得
-            	fds = Friend.objects.filter (owner=request.user)\
-            	        .filter(user__in=sel_users)
-            	# すべてのFriendに Groupを設定し保存する
-            	vlist []
-            	for item in fds:
-            	    item.group = group_obj
-            	    item.save()
-            	    vlist.append(item.user.username)
-            	# メッセージを設定
-            	messages.success (request, 'チェックされたFriendを' + \
-            	        sel_group + 'に登録しました。)
-            	# フォームの用意
-            	groupsform = GroupSelectForm(request.user, \
-            	        {'groups':sel_group})
-            	friendsform = FriendsForm(request.user, \
-            	        friends=friends, vals=vlist)
+                sel_group = request.POST['group']
+                group_obj = Group.objects.filter(title=sel_group).first()
+                #チェックしたFriendsを取得
+                sel_fds = request.POST.getlist('friends')
+                # Friendsの User を取得
+                sel_users = User.objects.filter(username__in=sel_fds)
+                # Userのリストに含まれるユーザーが登録したFriendを取得
+                fds = Friend.objects.filter (owner=request.user)\
+                    .filter(user__in=sel_users)
+                    # すべてのFriendに Groupを設定し保存する
+                vlist = []
+                for item in fds:
+                    item.group = group_obj
+                    item.save()
+                    vlist.append(item.user.username)
+                # メッセージを設定
+                messages.success(request, ' チェックされたFriendを' + \
+                sel_group + 'に登録しました。')
+                # フォームの用意
+                groupsform = GroupSelectForm(request.user, \
+                        {'groups':sel_group})
+                friendsform = FriendsForm(request.user, \
+                        friends=friends, vals=vlist)
+
     # GET アクセス時の処理
     else:
         # フォームの用意
-        groupsform = GroupSelectForm (request.user)
+        groupsform = GroupSelectForm(request.user)
         friendsform = FriendsForm(request.user, friends=friends,
             vals=[])
-        sel_group =　'-'
+        sel_group = '-'
         
     # 共通処理
     createform = CreateGroupForm()
-        
         #ここから358p359p
-    params {
-            'login_user':request.user,
-            'groups_form':groupsform,
-            'friends_form':friendsform,
-            'create_form':createform,
-            'group':sel_group,
+    params = {
+        'login_user':request.user,
+        'groups_form':groupsform,
+        'friends_form':friendsform,
+        'create_form':createform,
+        'group':sel_group,
         }
     return render(request, 'sns/groups.html', params)
         
@@ -144,7 +143,7 @@ def groups (request):
 def add (request):
 	# 追加するUserを取得
 	add_name = request. GET['name']
-	add_user User.objects.filter(username=add_name).first()
+	add_user = User.objects.filter(username=add_name).first()
 	# Userが本人だった場合の処理
 	if add_user == request.user:
 		messages.info (request, "自分自身をFriendに追加することは\
@@ -168,8 +167,7 @@ def add (request):
 	frd.group = public_group
 	frd.save()
 	# メッセージを設定
-	messages.success (request, add_user.username + 1 を追加しました! \
-		groupページに移動して、追加したFriendをメンバーに設定して下さい。')
+	messages.success(request, add_user.username + ' を追加しました! groupページに移動して、追加したFriendをメンバーに設定して下さい。')
 	return redirect(to='/sns')
 
 #グループの作成処理
@@ -189,8 +187,8 @@ def post (request):
 	# POST送信の処理
 	if request.method == 'POST':
 		# 送信内容の取得
-		gr_name = request. POST['groups']
-		content = request. POST['content']
+		gr_name = request.POST['groups']
+		content = request.POST['content']
 		# Groupの取得
 		group = Group.objects.filter (owner=request.user) \
 				.filter(title=gr_name).first()
@@ -222,30 +220,29 @@ def post (request):
 def share(request, share_id):
     # シェアするMessageの取得
     share = Message.objects.get(id=share_id)
-        
+    
     # POST送信時の処理
-	if request.method 'POST':
+    if request.method == 'POST':
 		# 送信内容を取得
-		gr_name = request.POST['groups']
-		content = request.POST['content']
+        gr_name = request.POST['groups']
+        content = request.POST['content']
 		# Groupの取得
-		group = Group.objects.filter (owner=request.user) \
-				.filter(title=gr_name).first()
-		if group == None:
-			(pub_user, group) = get_public()
+        group = Group.objects.filter(owner=request.user).filter(title=gr_name).first()
+        if group == None:
+            (pub_user, group) = get_public()
 		#メッセージを作成し、設定をして保存
-		msg Message()
-		msg.owner = request.user
-		msg.group = group
-		msg.content = content
-		msg. share_id = share.id
-		msg.save()
-		share_msg = msg.get_share()
-		share_msg.share_count += 1
-		share_msg.save()
-		# メッセージを設定
-		messages. success (request, 'メッセージをシェアしました！' )
-		return redirect(to='/sns')    
+        msg = Message()
+        msg.owner = request.user
+        msg.group = group
+        msg.content = content
+        msg.share_id = share.id
+        msg.save()
+        share_msg = msg.get_share()
+        share_msg.share_count += 1
+        share_msg.save()
+        # メッセージを設定
+        messages.success(request, 'メッセージをシェアしました！' )
+        return redirect(to='/sns')    
         
     # 共通処理
     form = PostForm(request.user)
@@ -266,27 +263,27 @@ def good (request, good_id):
             .filter (message=good_msg).count()
     # ゼロより大きければ既にgood済み
     if is_good > 0:
-	    messages.success (request, 'すでにメッセージにはGoodをしています。')
-	    return redirect(to='/sns')
-
-	# Messageのgood_countを1増やす
-	good_msg.good_count += 1
-	good_msg.save()
-	#Goodを作成し、設定して保存
-	good = Good()
-	good.owner = request.user
-	good.message = good_msg
-	good.save()
-	# メッセージを設定
-	messages.success (request, 'メッセージにGoodしました!')
-	return redirect(to='/sns')
+        messages.success (request, 'すでにメッセージにはGoodをしています。')
+        return redirect(to='/sns')
+    
+    # Messageのgood_countを1増やす
+    good_msg.good_count += 1
+    good_msg.save()
+    #Goodを作成し、設定して保存
+    good = Good()
+    good.owner = request.user
+    good.message = good_msg
+    good.save()
+    # メッセージを設定
+    messages.success (request, 'メッセージにGoodしました!')
+    return redirect(to='/sns')
 	
 # これ以降はビュー関数ではなく普通の関数
 	
 # 指定されたグループおよび検索文字によるMessage の取得
 def get_your_group_message (owner, glist, find):
     # publicの取得
-    (public_user,public-group) = get_public()
+    (public_user,public_group) = get_public()
     # チェックされたGroupの取得
     groups = Group.objects.filter(Q(owner=owner) \
             |Q (owner=public_user)).filter(title__in=glist)
@@ -301,7 +298,7 @@ def get_your_group_message (owner, glist, find):
     his_friends = Friend.objects.filter(user=owner) \
             .filter(group__in=his-groups)
     me_groups = []
-    for hf in his friends:
+    for hf in his_friends:
         me_groups.append(hf.group)
     # groupがgroupsに含まれるか me-groupsに含まれるMessageの取得
     if find==None:
@@ -319,13 +316,3 @@ def get_public():
     public_group = Group.objects.filter \
             (owner=public_user).first()
     return (public_user, public_group)	
-	
-
-	
-	
-	
-	
-	
-	
-	
-	

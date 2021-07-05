@@ -13,11 +13,11 @@
         {% endif %}>{{ message }}</li>
     {% endfor %}
 </ul>
-{% endif %}
-{% endblock%}
+{% endif }
+{% endblock %}
 
 {% block content %}
-<form action="[% url 'index' %}" method="post">
+<form action="{% url 'index' %}" method="post">
 {% csrf_token %}
 <input type="hidden" name="mode" value="__search_form__">
 {{search_form}}
@@ -30,25 +30,25 @@
 {{check_form}}
 <button>update</button>
 </form>
-{% for item in contents %}
+{% for item in contents %)
 <hr>
-<p c1ass="message_public">
+<p class="message_public">
 {% if item.group.title == 'public' %}
-[pub1ic]
+[public]
 {% endif %}</p>
-<p c1ass="message_content">{{item .Conもent}}</p>
-<p class="message_date">({{item.pub_date}})</p>
-{% if item.share_id > O%}
+<p class="message_content">{{item.content}}</p>
+<p class="message_date"> ({{item.pub_date}})</p>
+{% if item.share_id > 0 %}
     <hr class="share_line">
-    <p c1ass="share_item_content">{{item.get_share}}</P>
+    <p class="share_item_content">{{item.get_share}}</P>
 {% endif %}
 <p class="message_owner">
-<くSpan c1ass="message_counter">share={てitem.Share_Count}ナ ヽ
-good={て{item.good_Count}}く/Span>
-mftitem.owner}}"(<a href="% ur1 'add' %] ?name=t{titem . owner}ナ">
-add friendく/a> )
-<a href="17% ur] !share' item.1d %け">くbutton>share</button>く/a>
-<a href="{% ur1 'good' item.1d %]">くbutton>good!く/button>く/a>
-く/ゃp>
-{7 endfor 74け
-{》% endblock 7
+    <span class="message_counter">share={{item.share_count}} \
+        good={{item.good_count}}</span>
+    "{{item.owner}}"(<a href="{% url 'add' %}?name={{item.owner}}">
+        add friend</a>)
+    <a href="{% url 'share' item. id %}"><button>share</button></a>
+    <a href="{% url 'good' item. id %}"><button>good!</button></a>
+</p>
+{% endfor %}
+{% endblock %}

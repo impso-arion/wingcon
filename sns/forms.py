@@ -31,7 +31,7 @@ class SearchForm(forms.Form):
 class GroupCheckForm(forms.Form) :
     def __init__(self, user, *args, **kwargs) :
         super(GroupCheckForm, self).__init__(*args, **kwargs)
-        public User.objects.filter(username='public').first()
+        public = User.objects.filter(username='public').first()
         self.fields['groups'] = forms. MultipleChoiceField(
             choices=[(item.title, item.title) for item in \
                 Group.objects.filter(owner_in= [user,public])],
@@ -51,8 +51,8 @@ class GroupSelectForm(forms.Form):
 class FriendsForm(forms.Form):
     def __init__(self, user, friends=[], vals=[], *args, **kwargs):
         super(FriendsForm, self).__init__(*args, **kwargs)
-        self.fields['friends'] = forms. MultipleChoiceField
-            choices=[(item.user, item.user) for item in friends] ,
+        self.fields['friends'] = forms. MultipleChoiceField(
+            choices=[(item.user, item.user) for item in friends],
             widget=forms.CheckboxSelectMultiple(),
             initial=vals #初期値
         )
@@ -60,18 +60,17 @@ class FriendsForm(forms.Form):
         
 # Group作成フォーム
 class CreateGroupForm(forms.Form) :
-    group_name = forms. CharField(max_length=50) )
+    group_name = forms. CharField(max_length=50)
     
 # 投稿フォーム
 class PostForm(forms.Form) :
-    content forms.CharField(max_length=500, \
-        widget=forms.Textarea) )
+    content = forms.CharField(max_length=500, widget=forms.Textarea)
     def __init__(self, user, *args, **kwargs) :
         super(PostForm, self).__init__(*args, **kwargs)
         public = User.objects.filter(username='public').first()
         self.fields['groups'] = forms.ChoiceField(
             choices=[('-', '-')] + [(item.title, item.title) \
-                for item in Group.objects, \
+                for item in Group.objects. \
                 filter (owner__in=[user, public])],
         )
         
