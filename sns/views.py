@@ -321,4 +321,11 @@ def get_public():
             (owner=public_user).first()
     return (public_user, public_group)
 
+#〓〓〓〓〓〓〓〓〓〓〓〓〓〓〓〓〓〓〓〓〓〓〓〓〓〓〓〓〓ここからテスト
+
+#
+
+
+
+
 

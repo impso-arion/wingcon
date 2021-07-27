@@ -16,5 +16,67 @@ user3
 パスワードはそれぞれOrio2121
 
 
+初期作成時メモ
+〓〓〓〓〓〓〓〓〓〓〓〓〓〓〓〓〓〓〓〓〓〓〓〓〓〓〓
+DB　設計
+
+ユーザーアカウントはDjangoの管理機能を使用するので
+新たにDBテーブルは作成しない
+
+メッセージテーブル
+owner ID　：　投稿者
+group ID　：　投稿先のグループ
+conten  コンテンツ
+share ID    シェアした投稿のID
+good count  goodした数
+share count shereされた回数
+pub_date    投稿日時
+
+グループテーブル
+owner ID    登録者のアカウント
+user ID バインドされるユーザーアカウント
+group ID    登録されているグループID
+
+goodテーブル
+owner ID    goodしたユーザーのID
+message ID  goodしたメッセージのID
+
+
+モデルの作成（DB項目の作成)は以下に記述
+sns/migrations/models.py
+
+何か変更したらマイグレーションを行います
+python manage.py makemigrations sns
+これでsnsアプリのmigrationsフォルダ内に0001_initial.pyが作成されるので
+ファイルを適用するために以下を実行
+
+pthon manage.py migrate
+
+〓〓〓〓〓〓〓〓〓〓〓〓〓〓〓〓〓〓〓〓〓〓〓〓〓〓〓〓〓〓〓
+Djangoの管理ツールにsnsのモデル類を登録する
+プロジェクトのsnsフォルダ内admin.py
+〓〓〓〓〓〓〓〓〓〓〓〓〓〓〓〓〓〓〓〓〓〓〓〓〓〓〓〓〓〓〓
+
+ユーザーの登録は管理ツールで行う
+
+あとは
+views.py
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
