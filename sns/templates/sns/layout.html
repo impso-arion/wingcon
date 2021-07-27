@@ -3,9 +3,15 @@
 <html lang="ja">
 <head>
     <meta charset="utf-8">
+    <!--追加これはInternetExplorerのブラウザではバージョンによって崩れることがあるので、
+    互換表示をさせないために設定するmetaタグです。-->
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <!--これはレスポンシブWebデザインを使うために必要なmetaタグです。-->
+    <meta name="viewport" content="width=device-width, initial-scale=1"><!--追加-->
     <title>{% block title %}{% endblock %}</title>
     <link rel="stylesheet" type="text/css" 
         href="{% static 'sns/style.css' %}" />
+
 </head>
 <body>
     <div class="body_content">
