@@ -25,7 +25,7 @@ class GoodForm(forms.ModelForm):
 
 # 検索フォーム
 class SearchForm(forms.Form):
-    search = forms.CharField(max_length=100)
+    search = forms.CharField(label='メッセージ検索', max_length=100)
 
 # Groupのチェックボックスフォーム
 class GroupCheckForm(forms.Form):
@@ -35,7 +35,7 @@ class GroupCheckForm(forms.Form):
         self.fields['groups'] = forms.MultipleChoiceField(
             choices=[(item.title, item.title) for item in \
                  Group.objects.filter(owner__in=[user,public])],
-            widget=forms.CheckboxSelectMultiple(),
+            widget=forms.CheckboxSelectMultiple(), label='絞り込みグループ',
         )
 
 # Groupの選択メニューフォーム
