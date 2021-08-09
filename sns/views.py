@@ -11,6 +11,41 @@ from django.db.models import Q
 from django.contrib.auth.decorators import login_required
 
 # indexのビュー関数
+'''
+django のプロジェクトではdjango.contrib.authというアプリケーションが組み込まれています
+django_appフォルダ内のsettings.pyにあるINSTALLED_APPS変数部分を見るとわかります
+このdjango.contrib.authがDjangoに組み込まれているユーザー認証機能です。
+これは先にDjangoの管理ツールを利用したりログインしたりユーザーを作成したりしましたが
+そのユーザー認証機能です。
+django.contrib.authは
+http://localhost:8000/admin/というアドレスで組み込まれています。
+request.userで得られるユーザー情報は、Userというクラスのインスタンスになっています。これを使うには
+以下のようにimport分を用意しておきます
+from django.contrib.auth.models import User
+
+ユーザー認証機能はただdjango.contrib.authアプリをインストールするだけで自動的にページに組み込まれるわけでは
+ありません
+ユーザー認証を利用したいページに「このページはログインしないとアクセスできない」ということを
+設定しておく必要があります。それを行っているのがindexの前の
+@login_required(login_url='/admin/login/')です
+
+この@login_requiredというのはアノテーションと呼ばれるものです。
+アノテーションは関数やクラスなどに特定の役割や設定などを割り振るのにつかわれます。
+
+引数には、login_urlという値が用意されていますがこれはログインページのURLを指定するものです。
+ここではadmin/login/が指定されていますが、これがdjango.contrib.authのログインページになります。
+
+これで@login_requiredアノテーションを付けたビュー関数によるページは、ログインしないとアクセスできなくなります
+ログインしないユーザーがそのページにアクセスすると自動的にログインページにリダイレクトされます。
+
+実に簡単にユーザー認証が必要なページが作れてしまうのですね
+
+なお、この@login_requiredアノテーションを利用する際には、必ず以下のようにimport文を用意しておくのを
+忘れないようにしてください
+from django.contrib.auth.decorators import login_required
+
+
+'''
 @login_required(login_url='/admin/login/')
 def index(request):
     # publicのuserを取得
@@ -22,35 +57,35 @@ def index(request):
         # Groupsのチェックを更新した時の処理
         if request.POST['mode'] == '__check_form__':
             # フォームの用意
-            searchform = SearchForm()
-            checkform = GroupCheckForm(request.user,request.POST)
+            searchform = SearchForm()#インスタンスを作るだけ
+            checkform = GroupCheckForm(request.user,request.POST)#request.POSTをつけることで、チェックボックスの選択状態を再現できる
             # チェックされたGroup名をリストにまとめる
             glist = []
             for item in request.POST.getlist('groups'):
                 glist.append(item)
-            # Messageの取得
+            # Messageの取得　条件なしで表示する
             messages = get_your_group_message(request.user, \
                     glist, None)
 
         # Groupsメニューを変更した時の処理   
         if request.POST['mode'] == '__search_form__':
             # フォームの用意
-            searchform = SearchForm(request.POST)
+            searchform = SearchForm(request.POST)#request.POSTをつけることで検索テキストが残るかたちで検索フォームが再現されます
             checkform = GroupCheckForm(request.user)
             # Groupのリストを取得
             gps = Group.objects.filter(owner=request.user)
             glist = [public_group]
             for item in gps:
                 glist.append(item)
-            # メッセージを取得
+            # メッセージを取得　入力された検索テキストで検索する。
             messages = get_your_group_message(request.user, glist, \
                     request.POST['search'])
 
     # GETアクセス時の処理
     else:
         # フォームの用意
-        searchform = SearchForm()
-        checkform = GroupCheckForm(request.user)
+        searchform = SearchForm()#インスタンスを作るだけ
+        checkform = GroupCheckForm(request.user)#
         # Groupのリストを取得
         gps = Group.objects.filter(owner=request.user)
         glist = [public_group]
@@ -60,8 +95,16 @@ def index(request):
         messages = get_your_group_message(request.user, glist, None)
 
     #　共通処理
+    '''
+    共通処理はそれほど難しいものではありません
+    変数paramsに必要な値をまとめrenderで変数とテンプレートを指定して表示を行うだけです
+    必要な値は以下のようになっています
+    これらのうち、login_user以外のものはそれぞれmessages,checkform,searchformという変数を設定しています
+    つまり共通処理以外の3つは「この3つの変数を用意する」ことを行えばいいわけです
+    そうすれば画面が完成します。
+    '''
     params = {
-            'login_user':request.user,
+            'login_user':request.user,#login_userは現在ログインしているuserです。request.userだけでとりだせる
             'contents':messages,
             'check_form':checkform,
             'search_form':searchform,

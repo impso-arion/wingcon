@@ -70,8 +70,57 @@ https://localhost-impso-arion-1.paiza-user-free.cloud:8000/admin/logout/
 更新ボタンでグループ絞り込み
 
 share と good　は　リツィートといいねボタンとなる。
-
 share画面はshareボタンから遷移
+
+Django Administration　管理画面
+https://localhost-impso-arion-1.paiza-user-free.cloud:8000/admin/
+
+DBの管理がある程度できる
+ユーザーの追加はこちらから。
+AUTHENTUICATION AND AUTORIZATION
+GROUPSはSNSの側にもある。こちらのGROUPSは使用しない
+
+
+User1がGroupを追加したらGroupのリストに新しいグループが追加されるが
+Ownerはadminとして作られている
+
+GroupにせよOwnerにせよ、SNSである以上ユーザー各自がそれぞれで設定する
+ように作られていたが、もうOWNERにかかわらず全部出したらいいのではないか
+
+そして、グループメンバーだけしかメンバーの追加変更ができないようにしたら
+いいんじゃないかな・・・
+
+自分が参加しているグループが
+SNSページの「絞り込みグループ」に表示される
+
+POST画面でも
+自分が参加しているグループがドロップダウンに表示される
+
+Group画面でも
+自分が参加しているグループがドロップダウンに表示される
+
+そのためにはmigrateしなおすか、Viewを修正する必要がある
+
+ユーザーはまずFreiendを選んでGroupを作成してメッセージを送り合う
+ので
+
+それらのデータをすべて忘れ
+Friendといえば全ユーザー
+Groupsといえば全Groupsというかっこうで表示したら嬉しい。
+
+Group名をunique（一意)になるようにmigrations/models.pyを修正
+
+
+したので、すべてのGroupがドロップダウンリストに出るとうれしい
+
+
+
+
+
+
+
+
+
 
 
 

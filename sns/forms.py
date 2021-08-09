@@ -28,6 +28,25 @@ class SearchForm(forms.Form):
     search = forms.CharField(label='メッセージ検索', max_length=100)
 
 # Groupのチェックボックスフォーム
+'''
+このクラスではフィールドを設定した変数がありませんその代わりにあるのが
+初期化のためのメソッドです
+
+__init__というのがインスタンスを作成する際に呼び出される
+初期化メソッドです。ここではselfの後にuserという引数が用意されています。
+これはGroupを取得するUserを引数として渡すためのものです。
+ここではsuper()というもので基底クラスの__init__メソッドを呼び出します
+初期化の処理はこのクラスにしかないとは限りません。
+基底クラス(継承する元になっているクラス)にも__init__が用意されていて
+そこに初期化処理が用意されているかもしれないのです
+
+そこで__init__メソッドの最初に、規定クラスの__init__を呼び出して初期化処理を
+実行させておきます。super関数は第一引数にクラス、第二引数にインスタンス自身(self)を指定して
+呼び出すことで、そのインスタンスの規定クラスのインスタンスにあるメソッドを呼び出します。
+
+なんだかよくわからないという人は「super(GroupCheckForm,self)の後にメソッドを書いて呼び出せばOKと覚えておいてください
+
+'''
 class GroupCheckForm(forms.Form):
     def __init__(self, user, *args, **kwargs):
         super(GroupCheckForm, self).__init__(*args, **kwargs)

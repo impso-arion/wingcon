@@ -46,7 +46,7 @@ Groupではownerにmodels.ForeignKeyで設定してモデルと連携してい�
 class Group(models.Model):
         owner = models.ForeignKey(User, on_delete=models.CASCADE, \
             related_name='group_owner')
-        title = models.CharField(max_length=100)
+        title = models.CharField(max_length=100, unique=True)#ここを変更
         
         def __str__(self):
             return self.title
